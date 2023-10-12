@@ -1,6 +1,6 @@
-from typing import Callable
 import matplotlib.pyplot as plt
 import numpy as np
+from typing import Callable
 
 
 def x(t: float | np.ndarray) -> float | np.ndarray:
@@ -15,7 +15,7 @@ def z(t: float | np.ndarray) -> float | np.ndarray:
     return np.cos(120 * np.pi * t + np.pi / 3)
 
 
-def show_as_subplots(discrete_time_interval: [np.ndarray], signals: [Callable[[float | np.ndarray], float | np.ndarray]], title: str) -> None:
+def show_as_subplots(discrete_time_interval: np.ndarray, signals: [Callable[[float | np.ndarray], float | np.ndarray]], title: str) -> None:
     figure, axes = plt.subplots(len(signals), 1, )
     figure.suptitle(title)
 

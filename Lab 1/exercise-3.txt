@@ -1,0 +1,6 @@
+a) Given the 2000Hz sampling frequency, we can deduce that there are 2000-1=1999 intervals between the samples.
+The duration of each interval is, therefore, 1/1999~=0.0005s.
+
+b) Each sample requires 4 bits to store, there are 2000 samples taken every second and there are 3600s in an hour.
+4 * 2000 * 3600 = 28800000 bits
+28800000 bits / 8 = 3600000B
