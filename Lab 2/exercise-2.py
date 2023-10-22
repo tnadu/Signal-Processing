@@ -1,50 +1,52 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from typing import Callable
+from typing import Callable, Any
 
 
-def x(t, phase = 0):
-    return np.sin(80 * np.pi * t + phase)
+def x(t: float | np.ndarray, phase: float = 0) -> float | np.ndarray:
+    return np.sin(2 * np.pi * 8 * t + phase)
 
 
-def compute_gamma(samples, noise, snr):
-    return np.sqrt(np.linalg.norm(samples, ord=2) ** 2 / (snr * np.linalg.norm(noise, ord=2) ** 2))
+def compute_gamma(samples: np.ndarray, noise: np.ndarray, signal_to_noise_ratio: float) -> float:
+    return np.sqrt(np.linalg.norm(samples, ord=2) ** 2 / (signal_to_noise_ratio * np.linalg.norm(noise, ord=2) ** 2))
 
 
-def show_as_subplots_by_phase(discrete_time_interval: np.ndarray, signal: Callable[[float | np.ndarray, float], float | np.ndarray], phases: [float], title: str) -> None:
-    figure, axes = plt.subplots(len(phases), 1, )
-    figure.suptitle(title)
-
+def plot_by_phase(axis: Any, signal: Callable[[float | np.ndarray, float], float | np.ndarray], phases: [(float, str)],
+                  discrete_time_interval: np.ndarray, noise: np.ndarray = None, gammas: [float] = None, snr: float = None):
     for i, phase in enumerate(phases):
-        axes[i].plot(discrete_time_interval, signal(discrete_time_interval, phase))
-        axes[i].set_xlabel("time")
-        axes[i].set_ylabel("amplitude")
+        samples = signal(discrete_time_interval, phase[0])
 
-    plt.show()
+        if noise is not None and gammas is not None and snr:
+            samples += gammas[i] * noise
 
+        axis.plot(discrete_time_interval, samples, label=phase[1])
 
-def show_as_subplots_by_gamma(discrete_time_interval: np.ndarray, signal: Callable[[float | np.ndarray, float], float | np.ndarray], noise: np.ndarray, gammas: np.ndarray, title: str) -> None:
-    figure, axes = plt.subplots(len(gammas), 1, )
-    figure.suptitle(title)
+    if noise is not None and gammas is not None and snr:
+        axis.set_title(f"SNR={snr}")
 
-    for i, gamma in enumerate(gammas):
-        noisy_signal = signal(discrete_time_interval) + gamma * noise
-        axes[i].plot(discrete_time_interval, noisy_signal)
-        axes[i].set_xlabel("time")
-        axes[i].set_ylabel("amplitude")
-
-    plt.show()
+    axis.set_xlabel("time")
+    axis.set_ylabel("amplitude")
+    axis.legend()
 
 
 def main():
-    discrete_time_interval = np.linspace(0, 1, 3200)
-    phases = [np.pi / 6, np.pi / 12, np.pi/3, np.pi / 5]
-    show_as_subplots_by_phase(discrete_time_interval, x, phases, "The same sinusoidal with different phases")
+    discrete_time_interval = np.linspace(0, 1, 640)
+    phases = [(np.pi/3, "pi/3"), (np.pi / 5, "pi/5"), (np.pi / 6, "pi/6"), (np.pi / 12, "pi/12")]
 
-    noise = np.random.normal(size=3200)
-    snrs = [0.1, 1, 10, 100]
-    gammas = [compute_gamma(x(discrete_time_interval), noise, snr) for snr in snrs]
-    show_as_subplots_by_gamma(discrete_time_interval, x, noise, gammas, "Different NSRs")
+    figure, axis = plt.subplots(layout="constrained")
+    figure.suptitle("Signals with different phases for the same amplitude and frequency")
+    plot_by_phase(axis, x, phases, discrete_time_interval)
+    plt.show()
+
+    noise = np.random.normal(size=640)
+    signal_to_noise_ratios = [0.1, 1, 10, 100, 10000]
+
+    figure, axes = plt.subplots(len(signal_to_noise_ratios), 1, layout="constrained")
+    figure.suptitle("The same signals with noise of various SNRs")
+    for i, signal_to_noise_ratio in enumerate(signal_to_noise_ratios):
+        gammas = [compute_gamma(x(discrete_time_interval, phase[0]), noise, signal_to_noise_ratio) for phase in phases]
+        plot_by_phase(axes[i], x, phases, discrete_time_interval, noise, gammas, signal_to_noise_ratio)
+    plt.show()
 
 
 if __name__ == '__main__':
