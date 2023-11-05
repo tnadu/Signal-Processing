@@ -3,9 +3,10 @@ import matplotlib.pyplot as plt
 
 
 def main():
-    aliased_signals = [lambda t: np.sin(2 * np.pi * (2 + 2 * 11) * t),
-                       lambda t: np.sin(2 * np.pi * (2 + 1 * 11) * t),
-                       lambda t: np.sin(2 * np.pi * (2 + 0 * 11) * t)]
+    # f = 24, fs = 11, k = {0, -1, -2}
+    aliased_signals = [lambda t: np.sin(2 * np.pi * (24 + 0 * 11) * t),
+                       lambda t: np.sin(2 * np.pi * (24 + (-1) * 11) * t),
+                       lambda t: np.sin(2 * np.pi * (24 + (-2) * 11) * t)]
     colors = ["mediumslateblue", "purple", "green"]
     discrete_time_interval = np.append(np.linspace(0, 1, 11, endpoint=False), 1)
     nyquist_discrete_time_interval = np.append(np.linspace(0, 1, 512, endpoint=False), 1)

@@ -1,0 +1,6 @@
+I would definitely have a very hard time distinguishing between vowels, based only on the spectrogram. However, there are some noticeable differences:
+	- 'a' has both high and low frequencies, and the most intensity is in the upper half of the lower frequencies
+	- 'e' appears the fullest in terms of frequencies
+	- 'i' has both high and low frequencies, and the most intensity is in the lower half of the lower frequencies
+	- 'o' is similar to 'a' in the lower frequencies, but lacks intensity in the higher ones
+	- 'u' is similar to 'i' in the lower frequencies, but lacks intensity in the higher ones
