@@ -24,6 +24,8 @@ def main():
     # taking the absolute value of each FT and transposing the resulting matrix, so that the
     # values of each FT end up on a column, not a row
     spectrogram_matrix = np.absolute(np.array(fast_fourier_transforms)).T
+    # converting values to dB
+    spectrogram_matrix = 10 * np.log10(spectrogram_matrix)
 
     # getting the temporal information (n/fs = nTs)
     discrete_time_interval = np.arange(0, len(samples), 1) / sample_rate

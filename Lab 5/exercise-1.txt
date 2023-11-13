@@ -1,0 +1,44 @@
+a) Ts = 1h => fs = 1 / 1h
+fs = 1 / 3600
+fs = 0.0002(7)Hz
+
+b) 18288 samples with Ts = 1h => 18288h
+18288h / 24 = 762 days
+762 / 365 ~= 2 years
+
+c) No aliasing => signal x is band-limited, so -B(Hz) <= x(t) <= B(Hz)
+Nyquist theorem => fs >= 2B
+Optimal sampling => fs = 2B => B = fs / 2
+Therefore, B = 0.00013(8) Hz
+
+e) DC offset (np.mean(samples)) = 138.96
+
+h) Visualizing the plot of the signal, we can search for periods of time with unusually high
+amounts of traffic. It should be verified that these outliers occur annually; since we have
+2 years worth of measurements, the outliers found in the samples of the first half should 
+appear after roughly 12 months in the second half. This is mandatory, in order to exclude
+irregular events.
+
+Given that the remaining periods associated with heavy traffic can be correlated with 
+specific annual events with known dates, and that the periods in between these special
+events match in duration with the periods in between the outliers, we may confidently
+pin each outlier to a known specific annual event. Afterwards, finding the date on which
+the measurements began is just a matter of subtracting the amount of time that passed
+from the first sample to the sample mapped to an annual event, from the date of that
+annual event.
+
+Of course, because we rely on yearly events, this method is culture specific, in the
+sense that we might mistake Christmas for Laylat al-Qadr, which are both extremely
+important occasions on which heavy traffic is experienced, but which occur on very
+different dates.
+
+Another problem is accuracy. It is highly likely that the periods with heavy traffic
+will be longer in duration than the specific dates they are correlated with, which
+means that a precise date might be difficult to map to the spikes in traffic (Heavy
+traffic may be registered not only on Christmas day, but also 2-3 days around that
+date).
+
+It is also possible that these measurements took place when some major event overlapped
+with an annual one (a pandemic, for example), which would reduce the traffic spikes which
+would be expected around that time of the year. This would prove very difficult to tell
+from the irregular events.
