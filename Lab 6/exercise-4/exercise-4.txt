@@ -1,0 +1,8 @@
+c) It would be highly unlikely that any particular event would consistently occur in a
+measurable and meaningful way with a period less than 12h, which corresponds to the
+transition from night to day. Therefore, the frequency I choose for the low-pass filter
+is 1 / (12 * 3600) Hz, or 0.0000231Hz, approximately.
+
+Given the sampling period Ts=1h, the Nyquist frequency is 1 / (2 * 3600s) Hz = 0.00013(8).
+The normalized value of the low-pass frequency would be (1 / (12 * 3600)) / (1 / (2 * 3600)) Hz,
+which is 0.1(6) Hz.
