@@ -37,12 +37,12 @@ def cross_validate(data, p, m, n_fold=10):
 def perform_cross_validation(data, p, m, n_fold):
     best_p = -1
     best_m = -1
-    best_score = -np.inf
+    best_score = np.inf
 
     for current_p in p:
         for current_m in m:
             score = cross_validate(data, current_p, current_m, n_fold)
-            if score > best_score:
+            if score < best_score:
                 best_score = score
                 best_p = current_p
                 best_m = current_m
