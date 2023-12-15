@@ -3,6 +3,16 @@ import scipy as sp
 import matplotlib.pyplot as plt
 
 
+def generate_time_series(N):
+    discrete_time_interval = np.linspace(0, 10, N)
+    trend = lambda t: 0.5 * t ** 2
+    seasonal = lambda t: 2 * np.sin(2 * np.pi * 8 * t) + 1.5 * np.cos(2 * np.pi * 4 * t)
+    residuals = np.random.normal(scale=2, size=N)
+    time_series = trend(discrete_time_interval) + seasonal(discrete_time_interval) + residuals
+
+    return trend, seasonal, residuals, time_series, discrete_time_interval
+
+
 def get_autocorrelation_vector(vector, number_of_correlated_elements):
     N = len(vector)
     autocorrelation_vector = np.ndarray((N - number_of_correlated_elements + 1))
@@ -103,14 +113,9 @@ class AutoRegressionModel:
 
 
 def main():
-    # a)
-    N = 1000
-    discrete_time_interval = np.linspace(0, 10, N)
-    trend = lambda t: 0.5 * t ** 2
-    seasonal = lambda t: 2 * np.sin(2 * np.pi * 8 * t) + 1.5 * np.cos(2 * np.pi * 4 * t)
-    residuals = np.random.normal(scale=2, size=N)
-    time_series = trend(discrete_time_interval) + seasonal(discrete_time_interval) + residuals
+    trend, seasonal, residuals, time_series, discrete_time_interval = generate_time_series(1000)
 
+    # a)
     figure, axes = plt.subplots(4, layout="constrained")
     figure.set_size_inches(25, 15)
 
